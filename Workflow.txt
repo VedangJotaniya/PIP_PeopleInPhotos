@@ -1,2 +1,24 @@
 Workflow of the project:
-AIM: to give a image of current classroom and 
+AIM: feed an input image to the program and it outputs names of people in the photo
+
+Feeding The imput Image: 
+-; Placing the image in images/processing
+
+running the program:  
+-; load encodings of the known people from the SavedEncodings Folder.
+-; Maybe rescale the input image to 720px height maintaining aspect ratio.
+-; get faces detected from haarclassifier.
+-; crop the faces from image and rescale them to Inputsize of FRModel(3, 96,96){Whether to maintain aspect ratio or not is not decided}.
+-; Store these images in the generated/datetime/Imagename/ folder.
+#-; pass this folder to the facerecognition part.
+-; for each image in folder
+	get the Image_encoding of the image
+	for each encoding of savedencodings
+		compare both encodings and store the encoding that is matching the most
+		store in a dictionary the person name and image path
+-; output the people in the image and their corresponding image
+-; On Exit placing the input image in images/Saved 
+
+
+Other functionalities:
+-; Adding the function to add person to SavedEncodings. 	

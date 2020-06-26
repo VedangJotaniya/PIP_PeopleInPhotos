@@ -54,13 +54,14 @@ def who_is_it(image, database, model):
             min_dist = dist
             identity = name
     
-    cv2.imshow(identity, image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
     if min_dist > 0.7:
         print("Not in the database.")
     else:
         print ("it's " + str(identity) + ", the distance is " + str(min_dist))
+    
+    cv2.imshow(identity, image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
         
     return min_dist, identity
 

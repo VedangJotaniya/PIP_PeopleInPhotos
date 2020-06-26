@@ -16,19 +16,7 @@ from FaceDetection          import *
 from fr_utils               import *
 from inception_blocks_v2 import *
 
-FaceCascade = None
-db = {}
-FRmodel =None
-def main():
-    FaceCascade = cv2.CascadeClassifier('.\\include\\haarcascade_frontalface_default.xml')
-    with open('.\\SavedEncodings\\KnownPersons..csv', 'r') as openfile:
-        reader = csv.reader(openfile)
-        db = dict(reader)
-        
-    FRmodel = LoadFRmodel()
-    print("Main Funcion Executed")  
-    return FaceCascade, db, FRmodel
-        
+       
 def SaveProfile(Name, Id, img, db):
     encoding = EncodingImage(img, FRmodel)
     db[Id] = encoding
@@ -51,6 +39,7 @@ def FindPersons(path, db, FRmodel):
                 # filepath = os.path.join(root, filename)
                 image = cv2.imread(path + filename)
                 dist, ID = who_is_it(image, db, FRmodel)
+                print(str(dist) + " " + str(ID))
                 PersonsFound[path+filename] = ID 
     
     return PersonsFound
@@ -58,24 +47,35 @@ def FindPersons(path, db, FRmodel):
 
 
 if __name__ == "__main__":
-    FaceCascade, db, FRmodel = main()
-    print("Main is executed")
+    print("Main Started Executing")
+    FaceCascade = cv2.CascadeClassifier('.\\include\\haarcascade_frontalface_default.xml')
+    print("Loading HaarCascade Classifier")
+    # with open(".\\SavedEncodings\\KnownPersons.json") as readfile:
+    print("Loading encoding model")
+    FRmodel = LoadFRmodel()
+    print("model loaded")
     
+    imgname = "6"
+    img = cv2.imread(".\\images\\processing\\" + imgname + ".jpg")
+    ScaleFactor = 1.1
+    MinNeighbours = 4
+    SavePath = ".\\GeneratedImage\\2020-06-26\\c\\"
+    __ = GenerateFaces(imgname, img, FaceCascade, ScaleFactor, MinNeighbours, SavePath)
+    
+    db={}
+    ID = "004"
+    img = cv2.imread(".\\SavedEncodings\\images\\"+ID+".jpg")
+    db[ID] = EncodingImage(img, FRmodel)
+
+    personsPresent = FindPersons(".\\GeneratedImage\\2020-06-26\\b\\", db, FRmodel)
+
+# Name = "Krishna"
+# Id = "022"
+# img = cv2.imread(".\\SavedEncodings\\images\\022.jpg")
+# db = SaveProfile(Name, Id, img, db) 
+# SaveDB(db, '.\\SavedEncodings\\KnownPersons.csv')
 
 
-Name = "Krishna"
-Id = "022"
-img = cv2.imread(".\\SavedEncodings\\images\\022.jpg")
-db = SaveProfile(Name, Id, img, db) 
-SaveDB(db, '.\\SavedEncodings\\KnownPersons.csv')
 
 
-img = cv2.imread(".\\images\\processing\\12.jpg")
-ScaleFactor = 1.1
-MinNeighbours = 1
-SavePath = ".\\GeneratedImage\\2020-06-26\\A211\\"
-__ = GenerateFaces("12", img, FaceCascade, ScaleFactor, MinNeighbours, SavePath)
-
-
-personsPresent = FindPersons(".\\GeneratedImage\\2020-06-26\\A211\\", db, FRmodel)
  
