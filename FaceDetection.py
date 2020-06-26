@@ -20,10 +20,10 @@ def SaveCroppedImage(ImgName, image, path, shape=(3, 96, 96)):
     cv2.imwrite(path+ImgName, image)
     
 
-def GenerateFaces(imgname, img, ScaleFactor, MinNeighbours, SavePath):
+def GenerateFaces(imgname, img, FaceCascade, ScaleFactor, MinNeighbours, SavePath):
     img=cv2.resize(img, (720, int(720 * img.shape[0] / img.shape[1])))
     
-    FaceCascade = cv2.CascadeClassifier('.\\include\\haarcascade_frontalface_default.xml')
+    # FaceCascade = cv2.CascadeClassifier('.\\include\\haarcascade_frontalface_default.xml')
     Faces = DetectStructure(img, FaceCascade, ScaleFactor, MinNeighbours)
     
     Today = dt.datetime.now()

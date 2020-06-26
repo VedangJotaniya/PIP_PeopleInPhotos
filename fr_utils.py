@@ -195,3 +195,8 @@ def img_to_encoding(image_path, model):
     x_train = np.array([img])
     embedding = model.predict_on_batch(x_train)
     return embedding
+
+
+
+
+
