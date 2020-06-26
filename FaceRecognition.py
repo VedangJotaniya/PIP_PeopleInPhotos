@@ -46,14 +46,17 @@ def LoadFRmodel():
     return FRmodel
 
 def who_is_it(image, database, model):
-    encoding = EncodingImage(image_path, model)
+    encoding = EncodingImage(image, model)
     min_dist = 100
     for (name, db_enc) in database.items():
         dist = np.linalg.norm(encoding - db_enc, ord='nuc')
         if dist < min_dist:
             min_dist = dist
             identity = name
-  
+    
+    cv2.imshow(identity, image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     if min_dist > 0.7:
         print("Not in the database.")
     else:

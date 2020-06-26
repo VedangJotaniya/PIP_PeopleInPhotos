@@ -9,6 +9,7 @@ import cv2
 import os
 import json
 import csv
+import re
 import numpy as np
 from FaceRecognition        import *
 from FaceDetection          import *
@@ -43,18 +44,23 @@ def SaveDB(db, File):
     return 
 
 def FindPersons(path, db, FRmodel):
+    PersonsFound={}
+    for root, dirnames, filenames in os.walk(path):
+        for filename in filenames:
+            if re.search("\.(jpg|jpeg|JPEG)$", filename):
+                # filepath = os.path.join(root, filename)
+                image = cv2.imread(path + filename)
+                dist, ID = who_is_it(image, db, FRmodel)
+                PersonsFound[path+filename] = ID 
     
-    
-    
-    
-    return
+    return PersonsFound
 
 
 
 if __name__ == "__main__":
     FaceCascade, db, FRmodel = main()
     print("Main is executed")
-
+    
 
 
 Name = "Krishna"
@@ -64,5 +70,12 @@ db = SaveProfile(Name, Id, img, db)
 SaveDB(db, '.\\SavedEncodings\\KnownPersons.csv')
 
 
+img = cv2.imread(".\\images\\processing\\12.jpg")
+ScaleFactor = 1.1
+MinNeighbours = 1
+SavePath = ".\\GeneratedImage\\2020-06-26\\A211\\"
+__ = GenerateFaces("12", img, FaceCascade, ScaleFactor, MinNeighbours, SavePath)
 
-    
+
+personsPresent = FindPersons(".\\GeneratedImage\\2020-06-26\\A211\\", db, FRmodel)
+ 
