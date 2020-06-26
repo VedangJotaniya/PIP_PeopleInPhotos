@@ -25,8 +25,6 @@ import tensorflow as tf
 from fr_utils import *
 from inception_blocks_v2 import *
 
-FRmodel = faceRecoModel(input_shape=(3, 96, 96))
-print("Total Params:", FRmodel.count_params())
 
 
 def triplet_loss(y_true, y_pred, alpha = 0.2):   
@@ -39,11 +37,29 @@ def triplet_loss(y_true, y_pred, alpha = 0.2):
     return loss
 
 
-FRmodel.compile(optimizer = 'adam', loss = triplet_loss, metrics = ['accuracy'])
-load_weights_from_FaceNet(FRmodel)
+def LoadFRmodel():
+    FRmodel = faceRecoModel(input_shape=(3, 96, 96))
+    print("Total Params:", FRmodel.count_params())
+    FRmodel.compile(optimizer = 'adam', loss = triplet_loss, metrics = ['accuracy'])
+    load_weights_from_FaceNet(FRmodel)
+    
+    return FRmodel
 
-
-
+def who_is_it(image, database, model):
+    encoding = EncodingImage(image_path, model)
+    min_dist = 100
+    for (name, db_enc) in database.items():
+        dist = np.linalg.norm(encoding - db_enc, ord='nuc')
+        if dist < min_dist:
+            min_dist = dist
+            identity = name
+  
+    if min_dist > 0.7:
+        print("Not in the database.")
+    else:
+        print ("it's " + str(identity) + ", the distance is " + str(min_dist))
+        
+    return min_dist, identity
 
 
 
