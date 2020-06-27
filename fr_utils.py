@@ -203,6 +203,18 @@ def EncodingImage(img, model):
     embedding = model.predict_on_batch(x_train)
     return embedding
 
+def EncodingImage2(img, model):
+    img = img[...,::-1]
+    img = np.around(np.transpose(img, (2,0,1))/255.0, decimals=12)
+    print(img.shape)
+    
+    x_train = np.array([img])
+    print(x_train.shape)
+    
+    embedding = model.predict_on_batch(x_train)
+    return embedding
+
+
 
 
 

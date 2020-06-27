@@ -68,6 +68,8 @@ if __name__ == "__main__":
     db[ID] = EncodingImage(img, FRmodel)
 
     personsPresent = FindPersons(".\\GeneratedImage\\2020-06-26\\b\\", db, FRmodel)
+    
+    
 
 # Name = "Krishna"
 # Id = "022"
